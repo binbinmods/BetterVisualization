@@ -1,0 +1,7 @@
+{
+  "name": "Better_Visualization",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/binbinmods/BetterVisualization",
+  "description": "A mod that DescriptionToReplace",
+  "dependencies": ["BepInEx-BepInExPack_AcrossTheObelisk-5.4.23"]
+}
