@@ -73,6 +73,18 @@ namespace BetterVisualization
         }
 
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(PopupNode), "Start")]
+        public static void PopupNodeStartPrefix(ref PopupNode __instance)
+        {
+            LogDebug($"PopupNodeStartPrefix");
+            __instance.transform.localScale = new Vector3(__instance.transform.localScale.x * NodePopupSizeMultiplier.Value,
+                                                          __instance.transform.localScale.y * NodePopupSizeMultiplier.Value,
+                                                          __instance.transform.localScale.z);
+
+
+        }
+
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(GameManager), nameof(GameManager.Resize))]
         public static bool ResizePrefix()
         {

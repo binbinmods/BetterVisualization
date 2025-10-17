@@ -50,6 +50,7 @@ namespace BetterVisualization
         public static ConfigEntry<bool> EnableDebugging { get; set; }
         public static ConfigEntry<float> GlobalSizeMultiplier { get; set; }
         public static ConfigEntry<float> CardSizeMultiplier { get; set; }
+        public static ConfigEntry<float> NodePopupSizeMultiplier { get; set; }
         // public static ConfigEntry<bool> EnablePerkChangeInTowns { get; set; }
         // public static ConfigEntry<bool> EnablePerkChangeWhenever { get; set; }
 
@@ -60,7 +61,9 @@ namespace BetterVisualization
         internal static int ModDate = int.Parse(DateTime.Today.ToString("yyyyMMdd"));
         private readonly Harmony harmony = new(PluginInfo.PLUGIN_GUID);
         internal static ManualLogSource Log;
-
+        public static float CardSize = 1.0f;
+        public static float CardSizeTable = 1.2f;
+        public static float CardSizeAmplified = 1.4f;
 
         public static string debugBase = $"{PluginInfo.PLUGIN_GUID} ";
 
@@ -76,8 +79,14 @@ namespace BetterVisualization
             EnableDebugging = Config.Bind(new ConfigDefinition(modName, "EnableDebugging"), false, new ConfigDescription("Enables the debugging"));
             GlobalSizeMultiplier = Config.Bind(new ConfigDefinition(modName, "GlobalSizeMultiplier"), 1.00f, new ConfigDescription("Increases the size of most things in the game. Roughly equivalent to resizing screen."));
             CardSizeMultiplier = Config.Bind(new ConfigDefinition(modName, "CardSizeMultiplier"), 1.25f, new ConfigDescription("Increases the size of CardItems."));
+            NodePopupSizeMultiplier = Config.Bind(new ConfigDefinition(modName, "NodePopupSizeMultiplier"), 1.25f, new ConfigDescription("Increases the popup in the map for nodes/events/combats."));
             // DevMode = Config.Bind(new ConfigDefinition("DespairMode", "DevMode"), false, new ConfigDescription("Enables all of the things for testing."));
             // apply patches, this functionally runs all the code for Harmony, running your mod
+            CardSizeTable = CardSizeMultiplier.Value * 1.2f;
+            CardSizeAmplified = CardSizeMultiplier.Value * 1.4f;
+
+            GlobalSizeMultiplier.SettingChanged += (obj, args) => { GameManager.Instance?.Resize(); };
+
             PluginName = PluginInfo.PLUGIN_NAME;
             PluginVersion = PluginInfo.PLUGIN_VERSION;
             PluginGUID = PluginInfo.PLUGIN_GUID;
